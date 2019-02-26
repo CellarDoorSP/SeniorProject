@@ -1,0 +1,59 @@
+﻿@model SeniorProject.ViewModels.HomeIndexViewModel
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<body>
+    <div style="height:20px"></div>
+    <a asp-action="AddStudent">Add Student</a>
+    |
+    <a asp-action="DeleteStudent">Delete Student</a>
+    |
+    <a asp-action="AddBehavior">Add Behavior</a>
+    |
+    <a asp-action="DeleteBehavior">Delete Behavior</a>
+
+    <table class="table table-bordered table-responsive table-hover">
+        <tr>
+            <th>Name</th>
+            <th>Behaviors</th>
+            <th>Total</th>
+        </tr>
+        @foreach (var student in Model.Students)
+        {
+            <tr>
+                <td width="125">
+                    <a href="/Home/Details/@student.Id">@student.StudentName</a>
+                </td>
+                <td>
+                    <div class="container ">
+                        <div class="row">
+                            @foreach (var behavior in Model.Behaviors)
+                            {
+                                if (behavior.StudentName == student.StudentName)
+                                {
+                                    if (behavior.Value > 0)
+                                    {
+                                        <div class="col-sm-2" style="background-image: linear-gradient(to bottom right, forestgreen, lightgreen); text-align:center; border-style:solid; border-radius:5px; border-width:2px">
+                                            <div>@behavior.BehaviorName</div>
+                                            <div>@behavior.Value</div>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="col-sm-2" style="background-image: linear-gradient(to bottom right, red, indianred); text-align:center; border-style:solid; border-radius:5px; border-width:2px">
+                                            <div>@behavior.BehaviorName</div>
+                                            <div>@behavior.Value</div>
+                                        </div>
+                                    }
+                                }
+                            }
+                        </div>
+                    </div>
+                </td>
+                <td width="50">@student.CurrentTotal</td>
+            </tr>
+        }
+    </table>
+    <input type="button" value="Reset" onclick="location.href='@Url.Action("ResetCurrent", "Home")'" />
+</body>
