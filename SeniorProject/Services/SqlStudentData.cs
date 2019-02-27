@@ -48,6 +48,11 @@ namespace SeniorProject.Services
             return _context.Students.OrderBy(s => s.StudentName);
         }
 
+        public IEnumerable<Student> GetAllFromUser(string name)
+        {
+            return _context.Students.Where(s => s.User == name);
+        }
+
         public bool Contains(string student)
         {
             return _context.Students.ToList().Contains(GetByName(student));

@@ -11,9 +11,10 @@ using System;
 namespace SeniorProject.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190227032626_UserStuff")]
+    partial class UserStuff
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -199,21 +200,19 @@ namespace SeniorProject.Data.Migrations
 
             modelBuilder.Entity("SeniorProject.Models.Student", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                    b.Property<string>("StudentName");
 
                     b.Property<int>("CurrentTotal");
 
                     b.Property<int>("GraphValue");
 
-                    b.Property<int>("LifetimeTotal");
+                    b.Property<int>("Id");
 
-                    b.Property<string>("StudentName")
-                        .IsRequired();
+                    b.Property<int>("LifetimeTotal");
 
                     b.Property<string>("User");
 
-                    b.HasKey("Id");
+                    b.HasKey("StudentName");
 
                     b.ToTable("Students");
                 });

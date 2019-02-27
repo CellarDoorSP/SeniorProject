@@ -26,7 +26,8 @@ namespace SeniorProject.Controllers
         public IActionResult Index()
         {
             var model = new HomeIndexViewModel();
-            model.Students = _studentData.GetAll();
+            //model.Students = _studentData.GetAll();
+            model.Students = _studentData.GetAllFromUser(User.Identity.Name);
             model.Behaviors = _behaviorData.GetAll();
 
             return View(model);
@@ -41,10 +42,18 @@ namespace SeniorProject.Controllers
         [HttpPost]
         public IActionResult AddStudent(StudentEditModel model)
         {
+            if(User.Identity.Name == null)
+            {
+                ViewBag.Message = "Must be logged in";
+                return RedirectToAction(nameof(Index));
+            }
+
             if (ModelState.IsValid)
             {
                 var newStudent = new Student();
                 newStudent.StudentName = model.StudentName;
+                newStudent.User = User.Identity.Name;
+
                 if (_studentData.GetAll().Count() > 0)
                 {
                     newStudent.Id = _studentData.GetAll().Max(m => m.Id) + 1;
@@ -73,6 +82,12 @@ namespace SeniorProject.Controllers
         [HttpPost]
         public IActionResult DeleteStudent(StudentEditModel model)
         {
+            if (User.Identity.Name == null)
+            {
+                ViewBag.Message = "Must be logged in";
+                return RedirectToAction(nameof(Index));
+            }
+
             if (ModelState.IsValid)
             {
                 _studentData.Delete(model.StudentName);
@@ -102,6 +117,12 @@ namespace SeniorProject.Controllers
         [HttpPost]
         public IActionResult AddBehavior(BehaviorEditModel model)
         {
+            if (User.Identity.Name == null)
+            {
+                ViewBag.Message = "Must be logged in";
+                return RedirectToAction(nameof(Index));
+            }
+
             if (!_studentData.Contains(model.StudentName))
             {
                 ViewBag.Message = "Student name must already be added";
@@ -137,11 +158,17 @@ namespace SeniorProject.Controllers
         [HttpPost]
         public IActionResult DeleteBehavior(BehaviorEditModel model)
         {
+            if (User.Identity.Name == null)
+            {
+                ViewBag.Message = "Must be logged in";
+                return RedirectToAction(nameof(Index));
+            }
+
             if (!_studentData.Contains(model.StudentName))
             {
                 ViewBag.Message = "Student name must already be added";
                 return View();
-            }
+            }            
 
             if (ModelState.IsValid)
             {

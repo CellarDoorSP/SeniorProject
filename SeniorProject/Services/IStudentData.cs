@@ -9,6 +9,7 @@ namespace SeniorProject.Services
     public interface IStudentData
     {
         IEnumerable<Student> GetAll();
+        IEnumerable<Student> GetAllFromUser(string name);
         Student GetByName(string name);
         Student GetById(int id);
         Student Add(Student student);

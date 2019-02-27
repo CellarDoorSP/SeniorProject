@@ -11,13 +11,13 @@ namespace SeniorProject.Models
     {
         [Display(Name = "Student Name")]
         [Required(ErrorMessage = "Name is required")]
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public string StudentName { get; set; }
         public int LifetimeTotal { get; set; }
         public int CurrentTotal { get; set; }
 
         public int GraphValue { get; set; }
+        [Key]
         public int Id { get; set; }
+        public string User { get; set; }
     }
 }

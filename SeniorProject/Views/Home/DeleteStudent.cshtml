@@ -3,6 +3,16 @@
 <h1>Delete Student</h1>
 
 <form method="post">
+    @if (ViewBag.Message != null)
+    {
+        <script type="text/javascript">
+            window.onload = function () {
+                alert("@ViewBag.Message");
+
+            }
+        </script>
+    }
+
     <div class="row">
         <div class="col-sm-2">
             <label asp-for="StudentName"></label>
