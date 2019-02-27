@@ -11,9 +11,10 @@ using System;
 namespace SeniorProject.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190227175031_SettingsTable")]
+    partial class SettingsTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -197,20 +198,6 @@ namespace SeniorProject.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Behavior");
-                });
-
-            modelBuilder.Entity("SeniorProject.Models.Settings", b =>
-                {
-                    b.Property<string>("User")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<int>("ExtraGoal");
-
-                    b.Property<int>("MainGoal");
-
-                    b.HasKey("User");
-
-                    b.ToTable("Settings");
                 });
 
             modelBuilder.Entity("SeniorProject.Models.Student", b =>

@@ -87,15 +87,26 @@ namespace SeniorProject.Controllers
 
             if (ModelState.IsValid)
             {
-                _studentData.Delete(User.Identity.Name, model.StudentName);
+                if (!_studentData.UserContains(User.Identity.Name, model.StudentName))
+                {
+                    ViewBag.Message = "Student must already be added";
+                    return View();
+                }
+
+                int studentId = _studentData.GetStudentId(User.Identity.Name, model.StudentName);               
 
                 foreach (var behavior in _behaviorData.GetAll())
-                {
-                    if (behavior.StudentName == model.StudentName)
+                {       
+                    if (behavior.StudentId == _studentData.GetStudentId(User.Identity.Name, model.StudentName))
                     {
-                        _behaviorData.Delete(behavior.BehaviorName, _studentData.GetStudentId(User.Identity.Name, model.StudentName));
+                        _studentData.EditDeleteCurrentTotal(User.Identity.Name, model.StudentName, _behaviorData.GetByName(behavior.BehaviorName, studentId).Value);
+                        _studentData.EditDeleteLifetimeTotal(User.Identity.Name, model.StudentName, _behaviorData.GetByName(behavior.BehaviorName, studentId).Value);
+                        
+                        _behaviorData.Delete(behavior.BehaviorName, studentId);
                     }
                 }
+
+                _studentData.Delete(User.Identity.Name, model.StudentName);
 
                 return RedirectToAction(nameof(Index));
             }
@@ -171,6 +182,12 @@ namespace SeniorProject.Controllers
             if (ModelState.IsValid)
             {
                 int studentId = _studentData.GetStudentId(User.Identity.Name, model.StudentName);
+
+                if (_behaviorData.GetByName(model.BehaviorName, studentId) == null)
+                {
+                    ViewBag.Message = "Behavior must already be added";
+                    return View();
+                }
 
                 _studentData.EditDeleteCurrentTotal(User.Identity.Name, model.StudentName, _behaviorData.GetByName(model.BehaviorName, studentId).Value);
                 _studentData.EditDeleteLifetimeTotal(User.Identity.Name, model.StudentName, _behaviorData.GetByName(model.BehaviorName, studentId).Value);

@@ -18,6 +18,8 @@ namespace SeniorProject.Data
         public DbSet<Student> Students { get; set; }
         public DbSet<Behavior> Behavior { get; set; }
 
+        public DbSet<Settings> Settings { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
