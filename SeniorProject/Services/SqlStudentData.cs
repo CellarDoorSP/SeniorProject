@@ -23,9 +23,9 @@ namespace SeniorProject.Services
             return student;
         }
 
-        public void Delete(string student)
+        public void Delete(string user, string student)
         {
-            Student removeStudent = GetByName(student);
+            Student removeStudent = GetStudentFromUser(user, student);
             if (removeStudent != null)
             {
                 _context.Students.Remove(removeStudent);
@@ -33,65 +33,80 @@ namespace SeniorProject.Services
             }
         }
 
-        public Student GetByName(string name)
-        {
-            return _context.Students.FirstOrDefault(s => s.StudentName == name);
-        }
+        //public Student GetByName(string name)
+        //{
+        //    return _context.Students.FirstOrDefault(s => s.StudentName == name);
+        //}
 
         public Student GetById(int id)
         {
             return _context.Students.FirstOrDefault(s => s.Id == id);
         }
 
-        public IEnumerable<Student> GetAll()
+        public int GetStudentId(string user, string student)
         {
-            return _context.Students.OrderBy(s => s.StudentName);
+            return GetStudentFromUser(user, student).Id;
         }
+
+        //public IEnumerable<Student> GetAll()
+        //{
+        //    return _context.Students.OrderBy(s => s.StudentName);
+        //}
 
         public IEnumerable<Student> GetAllFromUser(string name)
         {
             return _context.Students.Where(s => s.User == name);
         }
 
-        public bool Contains(string student)
+        //public bool Contains(string student)
+        //{
+        //    return _context.Students.ToList().Contains(GetByName(student));
+        //}
+
+        public Student GetStudentFromUser(string name, string student)
         {
-            return _context.Students.ToList().Contains(GetByName(student));
+            return _context.Students.Where(s => s.User == name).FirstOrDefault(s => s.StudentName == student);
         }
 
-        public void EditAddLifetimeTotal(string student, int val)
+        public bool UserContains(string name, string student)
         {
-            if (Contains(student))
+            return _context.Students.Where(s => s.User == name).ToList().Contains(GetStudentFromUser(name, student));
+        }
+
+        public void EditAddLifetimeTotal(string user, string student, int val)
+        {
+            if (UserContains(user,student))
             {
-                GetByName(student).LifetimeTotal += val;
+                GetStudentFromUser(user, student).LifetimeTotal += val;
                 _context.SaveChanges();
             }
         }
 
-        public void EditAddCurrentTotal(string student, int val)
+        public void EditAddCurrentTotal(string user, string student, int val)
         {
-            if (Contains(student))
+            if (UserContains(user, student))
             {
-                GetByName(student).CurrentTotal += val;
-                GetByName(student).GraphValue = Convert.ToInt32((GetByName(student).CurrentTotal / 100.0) * 725.0) + 200;
+                GetStudentFromUser(user, student).CurrentTotal += val;
+                GetStudentFromUser(user, student).GraphValue = Convert.ToInt32((GetStudentFromUser(user, student).CurrentTotal / 100.0) * 725.0) + 200;
                 _context.SaveChanges();
             }
         }
 
-        public void EditDeleteLifetimeTotal(string student, int val)
+        public void EditDeleteLifetimeTotal(string user, string student, int val)
         {
-            if (Contains(student))
+            if (UserContains(user, student))
             {
-                GetByName(student).LifetimeTotal -= val;
+                GetStudentFromUser(user, student).LifetimeTotal -= val;
                 _context.SaveChanges();
             }
         }
 
-        public void EditDeleteCurrentTotal(string student, int val)
+        public void EditDeleteCurrentTotal(string user, string student, int val)
         {
-            if (Contains(student))
+            if (UserContains(user, student))
             {
-                GetByName(student).CurrentTotal -= val;
-                GetByName(student).GraphValue = Convert.ToInt32((GetByName(student).CurrentTotal / 100.0) * 725.0) + 200;
+                GetStudentFromUser(user, student).CurrentTotal -= val;
+                GetStudentFromUser(user, student).GraphValue = Convert.ToInt32((GetStudentFromUser(user, student).CurrentTotal / 100.0) * 725.0) + 200;
                 _context.SaveChanges();
             }
         }

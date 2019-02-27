@@ -187,6 +187,8 @@ namespace SeniorProject.Data.Migrations
                     b.Property<string>("BehaviorName")
                         .IsRequired();
 
+                    b.Property<int>("StudentId");
+
                     b.Property<string>("StudentName")
                         .IsRequired();
 

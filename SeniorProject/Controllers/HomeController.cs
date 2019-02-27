@@ -50,18 +50,15 @@ namespace SeniorProject.Controllers
 
             if (ModelState.IsValid)
             {
+                if (_studentData.UserContains(User.Identity.Name, model.StudentName))
+                {
+                    ViewBag.Message = "Cannot have duplicate student names";
+                    return View();
+                }
+
                 var newStudent = new Student();
                 newStudent.StudentName = model.StudentName;
-                newStudent.User = User.Identity.Name;
-
-                if (_studentData.GetAll().Count() > 0)
-                {
-                    newStudent.Id = _studentData.GetAll().Max(m => m.Id) + 1;
-                }
-                else
-                {
-                    newStudent.Id = 1;
-                }
+                newStudent.User = User.Identity.Name;                
 
                 newStudent = _studentData.Add(newStudent);
 
@@ -90,13 +87,13 @@ namespace SeniorProject.Controllers
 
             if (ModelState.IsValid)
             {
-                _studentData.Delete(model.StudentName);
+                _studentData.Delete(User.Identity.Name, model.StudentName);
 
                 foreach (var behavior in _behaviorData.GetAll())
                 {
                     if (behavior.StudentName == model.StudentName)
                     {
-                        _behaviorData.Delete(behavior.BehaviorName, model.StudentName);
+                        _behaviorData.Delete(behavior.BehaviorName, _studentData.GetStudentId(User.Identity.Name, model.StudentName));
                     }
                 }
 
@@ -123,7 +120,7 @@ namespace SeniorProject.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            if (!_studentData.Contains(model.StudentName))
+            if (!_studentData.UserContains(User.Identity.Name, model.StudentName))
             {
                 ViewBag.Message = "Student name must already be added";
                 return View();
@@ -134,12 +131,13 @@ namespace SeniorProject.Controllers
                 var newBehavior = new Behavior();
                 newBehavior.BehaviorName = model.BehaviorName;
                 newBehavior.StudentName = model.StudentName;
+                newBehavior.StudentId = _studentData.GetStudentId(User.Identity.Name, model.StudentName);
                 newBehavior.Value = model.Value;
 
                 newBehavior = _behaviorData.Add(newBehavior);
 
-                _studentData.EditAddCurrentTotal(model.StudentName, model.Value);
-                _studentData.EditAddLifetimeTotal(model.StudentName, model.Value);
+                _studentData.EditAddCurrentTotal(User.Identity.Name, model.StudentName, model.Value);
+                _studentData.EditAddLifetimeTotal(User.Identity.Name, model.StudentName, model.Value);
 
                 return RedirectToAction(nameof(Index));
             }
@@ -164,7 +162,7 @@ namespace SeniorProject.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            if (!_studentData.Contains(model.StudentName))
+            if (!_studentData.UserContains(User.Identity.Name, model.StudentName))
             {
                 ViewBag.Message = "Student name must already be added";
                 return View();
@@ -172,10 +170,12 @@ namespace SeniorProject.Controllers
 
             if (ModelState.IsValid)
             {
-                _studentData.EditDeleteCurrentTotal(model.StudentName, _behaviorData.GetByName(model.BehaviorName, model.StudentName).Value);
-                _studentData.EditDeleteLifetimeTotal(model.StudentName, _behaviorData.GetByName(model.BehaviorName, model.StudentName).Value);
+                int studentId = _studentData.GetStudentId(User.Identity.Name, model.StudentName);
 
-                _behaviorData.Delete(model.BehaviorName, model.StudentName);
+                _studentData.EditDeleteCurrentTotal(User.Identity.Name, model.StudentName, _behaviorData.GetByName(model.BehaviorName, studentId).Value);
+                _studentData.EditDeleteLifetimeTotal(User.Identity.Name, model.StudentName, _behaviorData.GetByName(model.BehaviorName, studentId).Value);
+
+                _behaviorData.Delete(model.BehaviorName, studentId);
 
                 return RedirectToAction(nameof(Index));
             }

@@ -40,7 +40,7 @@
                         <div class="row">
                             @foreach (var behavior in Model.Behaviors)
                             {
-                                if (behavior.StudentName == student.StudentName)
+                                if (behavior.StudentId == student.Id)
                                 {
                                     if (behavior.Value > 0)
                                     {

@@ -18,5 +18,6 @@ namespace SeniorProject.Models
         [Display(Name = "Student Name")]
         [Required(ErrorMessage = "Student Name required")]
         public string StudentName { get; set; }
+        public int StudentId { get; set; }
     }
 }

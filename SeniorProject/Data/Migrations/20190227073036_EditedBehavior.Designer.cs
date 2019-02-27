@@ -11,8 +11,8 @@ using System;
 namespace SeniorProject.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20190227032626_UserStuff")]
-    partial class UserStuff
+    [Migration("20190227073036_EditedBehavior")]
+    partial class EditedBehavior
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -188,6 +188,8 @@ namespace SeniorProject.Data.Migrations
                     b.Property<string>("BehaviorName")
                         .IsRequired();
 
+                    b.Property<int>("StudentId");
+
                     b.Property<string>("StudentName")
                         .IsRequired();
 
@@ -200,19 +202,21 @@ namespace SeniorProject.Data.Migrations
 
             modelBuilder.Entity("SeniorProject.Models.Student", b =>
                 {
-                    b.Property<string>("StudentName");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
 
                     b.Property<int>("CurrentTotal");
 
                     b.Property<int>("GraphValue");
 
-                    b.Property<int>("Id");
-
                     b.Property<int>("LifetimeTotal");
+
+                    b.Property<string>("StudentName")
+                        .IsRequired();
 
                     b.Property<string>("User");
 
-                    b.HasKey("StudentName");
+                    b.HasKey("Id");
 
                     b.ToTable("Students");
                 });

@@ -23,9 +23,9 @@ namespace SeniorProject.Services
             return behavior;
         }
 
-        public void Delete(string behavior, string student)
+        public void Delete(string behavior, int studentId)
         {
-            Behavior removeBehavior = GetByName(behavior, student);
+            Behavior removeBehavior = GetByName(behavior, studentId);
             if (removeBehavior != null)
             {
                 _context.Behavior.Remove(removeBehavior);
@@ -38,10 +38,10 @@ namespace SeniorProject.Services
             return _context.Behavior.FirstOrDefault(s => s.Id == id);
         }
 
-        public Behavior GetByName(string behavior, string student)
+        public Behavior GetByName(string behavior, int studentId)
         {
             IQueryable<Behavior> behaviorsMatched = _context.Behavior.Where(s => s.BehaviorName == behavior);
-            return behaviorsMatched.FirstOrDefault(b => b.StudentName == student);
+            return behaviorsMatched.FirstOrDefault(b => b.StudentId == studentId);
         }
 
         public IEnumerable<Behavior> GetAll()

@@ -10,9 +10,9 @@ namespace SeniorProject.Services
     {
         IEnumerable<Behavior> GetAll();
         Behavior Get(int id);
-        Behavior GetByName(string behavior, string student);
+        Behavior GetByName(string behavior, int studentId);
         Behavior Add(Behavior behavior);
-        void Delete(string behavior, string student);
+        void Delete(string behavior, int studentId);
         void DeleteAll();
     }
 }
