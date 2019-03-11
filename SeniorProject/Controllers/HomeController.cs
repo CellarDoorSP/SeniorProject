@@ -210,7 +210,35 @@ namespace SeniorProject.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        public IActionResult Details(int id)
+        //[HttpGet]
+        //public IActionResult EditGoals()
+        //{
+        //    return View();
+        //}
+
+        //[HttpPost]
+        //public IActionResult EditGoals(BehaviorEditModel model)
+        //{
+
+        //}
+
+
+
+            //public IActionResult EditMainGoal(int newNum)
+            //{
+            //    var n = newNum;
+
+            //    return RedirectToAction(nameof(Index)); 
+            //}
+
+            //public IActionResult EditExtraGoal()
+            //{
+
+
+            //    return RedirectToAction(nameof(Index));
+            //}
+
+            public IActionResult Details(int id)
         {
             var model = _studentData.GetById(id);
             if (model == null)
@@ -264,32 +292,32 @@ namespace SeniorProject.Controllers
 
 
 
-        public IActionResult Attendance()
-        {
-            ViewData["Message"] = "Where you will keep attendance.";
+        //public IActionResult Attendance()
+        //{
+        //    ViewData["Message"] = "Where you will keep attendance.";
 
-            return View();
-        }
-        public IActionResult Planner()
-        {
-            ViewData["Message"] = "Where you will be able to plan schedules.";
+        //    return View();
+        //}
+        //public IActionResult Planner()
+        //{
+        //    ViewData["Message"] = "Where you will be able to plan schedules.";
 
-            return View();
-        }
+        //    return View();
+        //}
 
-        public IActionResult Badges()
-        {
-            ViewData["Message"] = "Where you will be able to assign kids badges.";
+        //public IActionResult Badges()
+        //{
+        //    ViewData["Message"] = "Where you will be able to assign kids badges.";
 
-            return View();
-        }
+        //    return View();
+        //}
 
-        public IActionResult Stats()
-        {
-            ViewData["Message"] = "Where you will view stats about your kiddos.";
+        //public IActionResult Stats()
+        //{
+        //    ViewData["Message"] = "Where you will view stats about your kiddos.";
 
-            return View();
-        }
+        //    return View();
+        //}
 
         public IActionResult Error()
         {

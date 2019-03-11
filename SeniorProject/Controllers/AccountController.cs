@@ -25,16 +25,20 @@ namespace SeniorProject.Controllers
         private readonly IEmailSender _emailSender;
         private readonly ILogger _logger;
 
+        private ISettingsData _settingsData;
+
         public AccountController(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             IEmailSender emailSender,
-            ILogger<AccountController> logger)
+            ILogger<AccountController> logger,
+            ISettingsData settingsData)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _emailSender = emailSender;
             _logger = logger;
+            _settingsData = settingsData;
         }
 
         [TempData]
@@ -232,6 +236,9 @@ namespace SeniorProject.Controllers
 
                     await _signInManager.SignInAsync(user, isPersistent: false);
                     _logger.LogInformation("User created a new account with password.");
+
+                    _settingsData.AddUser(model.Email);
+
                     return RedirectToLocal(returnUrl);
                 }
                 AddErrors(result);

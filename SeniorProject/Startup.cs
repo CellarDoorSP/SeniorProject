@@ -37,7 +37,8 @@ namespace SeniorProject
             services.AddTransient<IEmailSender, EmailSender>();
             services.AddScoped<IStudentData, SqlStudentData>();
             services.AddScoped<IBehaviorData, SqlBehaviorData>();
-            
+            services.AddScoped<ISettingsData, SqlSettingsData>();
+
             services.AddMvc();
         }
 
